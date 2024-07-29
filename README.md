@@ -69,7 +69,8 @@ public class MainApplication extends Application implements ReactApplication {
     @Override
     protected List<ReactPackage> getPackages() {
       return Arrays.<ReactPackage>asList(
-          new MainReactPackage(),
+          val packages = PackageList(this).packages // <--- need this to define 'package'
+          //new MainReactPackage(),
           new SendSMSPackage()     // <--- add here!
       );
     }
@@ -104,7 +105,7 @@ import SendSMS from 'react-native-sms-x';
 
 export default class RNSMS extends Component {
   sendSMSFunction() {
-    SendSMS.send(123, "+95912345678", "Hey.., this is me!\nGood to see you. Have a nice day.",
+    SendSMS.send(123, "$PHONE_NUMBER", "Hey.., this is me!\nGood to see you. Have a nice day.",
       (msgId, msg)=>{
         ToastAndroid.show(msg, ToastAndroid.SHORT);
       }
@@ -140,8 +141,3 @@ const styles = StyleSheet.create({
 
 AppRegistry.registerComponent('RNSMS', () => RNSMS);
 ```
-
-## Support on Beerpay
-Hey dude! Help me out for a couple of :beers:!
-
-[![Beerpay](https://beerpay.io/yeyintkoko/react-native-sms-x/badge.svg?style=beer-square)](https://beerpay.io/yeyintkoko/react-native-sms-x)  [![Beerpay](https://beerpay.io/yeyintkoko/react-native-sms-x/make-wish.svg?style=flat-square)](https://beerpay.io/yeyintkoko/react-native-sms-x?focus=wish)
