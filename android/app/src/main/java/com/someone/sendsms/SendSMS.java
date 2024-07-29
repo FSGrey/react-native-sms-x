@@ -7,6 +7,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.telephony.SmsManager;
+
 import com.facebook.react.bridge.Callback;
 import com.facebook.react.bridge.ReactApplicationContext;
 import com.facebook.react.bridge.ReactContextBaseJavaModule;
@@ -48,10 +49,10 @@ public class SendSMS extends ReactContextBaseJavaModule {
             String DELIVERED = "SMS_DELIVERED";
 
             PendingIntent sentPI = PendingIntent.getBroadcast(reactContext, 0,
-                    new Intent(SENT), 0);
+                    new Intent(SENT), PendingIntent.FLAG_IMMUTABLE);
 
             PendingIntent deliveredPI = PendingIntent.getBroadcast(reactContext, 0,
-                    new Intent(DELIVERED), 0);
+                    new Intent(DELIVERED), PendingIntent.FLAG_IMMUTABLE);
 
             //---when the SMS has been sent---
             reactContext.registerReceiver(new BroadcastReceiver(){
@@ -76,7 +77,7 @@ public class SendSMS extends ReactContextBaseJavaModule {
                             break;
                     }
                 }
-            }, new IntentFilter(SENT));
+            }, new IntentFilter(SENT),Context.RECEIVER_EXPORTED);
 
             //---when the SMS has been delivered---
             reactContext.registerReceiver(new BroadcastReceiver(){
@@ -94,7 +95,7 @@ public class SendSMS extends ReactContextBaseJavaModule {
                             break;
                     }
                 }
-            }, new IntentFilter(DELIVERED));
+            }, new IntentFilter(DELIVERED), Context.RECEIVER_EXPORTED);
 
             SmsManager sms = SmsManager.getDefault();
             sms.sendTextMessage(phoneNumber, null, message, sentPI, deliveredPI);
